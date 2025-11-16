@@ -1,7 +1,7 @@
 "use client";
 import logo from "../assets/SegnaliLogo.png";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogPanel,
@@ -13,65 +13,50 @@ import {
   PopoverGroup,
   PopoverPanel,
 } from "@headlessui/react";
-import {
-  ArrowPathIcon,
-  Bars3Icon,
-  ChartPieIcon,
-  CursorArrowRaysIcon,
-  FingerPrintIcon,
-  SquaresPlusIcon,
-  XMarkIcon,
-} from "@heroicons/react/24/outline";
+import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 
-// --- DATI STATICI (DA MODIFICARE!) ---
-// DA SOSTITUIRE CON CHIAMATE.
-const products = [
-  {
-    name: "Borse",
-    description: "Get a better understanding of your traffic",
-    href: "#",
-    icon: ChartPieIcon,
-  },
-  {
-    name: "Zaini",
-    description: "Speak directly to your customers",
-    href: "#",
-    icon: CursorArrowRaysIcon,
-  },
-  {
-    name: "Cartelle",
-    description: "Your customers’ data will be safe and secure",
-    href: "#",
-    icon: FingerPrintIcon,
-  },
-  {
-    name: "Portafogli",
-    description: "Connect with third-party tools",
-    href: "#",
-    icon: SquaresPlusIcon,
-  },
-  {
-    name: "Accessori",
-    description: "Build strategic funnels that will convert",
-    href: "#",
-    icon: ArrowPathIcon,
-  },
-];
-// --- FINE DATI STATICI ---
+import type { Category } from "../types/api";
+import { fetchCategories } from "../services/api";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  // Creo uno stato per le categorie
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  // Uso useEffect PER CARICARE I DATI DAL BACKEND
+  useEffect(() => {
+    // Funzione interna asincrona
+    const loadCategories = async () => {
+      try {
+        setLoading(true);
+        setError(null);
+        const response = await fetchCategories();
+        setCategories(response.content);
+      } catch (err) {
+        setError("Impossibile caricare le categorie.");
+        console.error(err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadCategories(); // Eseguo la funzione
+  }, []); // [] Al caricamento
 
   return (
     <header className="bg-white border-b border-gray-200">
       <nav
         aria-label="Global"
-        className="mx-auto flex items-center justify-between p-6 lg:px-8"
+        className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8"
       >
         <div className="flex lg:flex-1">
-          <a href="#" className="-m-1.5 p-1.5 bor">
+          <a href="/" className="-m-1.5 p-1.5 flex items-center gap-x-2">
             <img alt="Logo Negozio" src={logo} className="h-8 w-auto" />
+            <span className="font-semibold text-gray-900">Segnali</span>
           </a>
         </div>
         <div className="flex lg:hidden">
@@ -80,6 +65,7 @@ export default function Navbar() {
             onClick={() => setMobileMenuOpen(true)}
             className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
           >
+            <span className="sr-only">Open main menu</span>
             <Bars3Icon aria-hidden="true" className="h-6 w-6" />
           </button>
         </div>
@@ -98,29 +84,44 @@ export default function Navbar() {
               className="absolute -left-8 top-full z-10 mt-3 w-screen max-w-md overflow-hidden rounded-3xl bg-white shadow-lg ring-1 ring-gray-900/5 transition data-[closed]:translate-y-1 data-[closed]:opacity-0 data-[enter]:duration-200 data-[enter]:ease-out data-[leave]:duration-150 data-[leave]:ease-in"
             >
               <div className="p-4">
-                {products.map((item) => (
-                  <div
-                    key={item.name}
-                    className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
-                  >
-                    <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
-                      <item.icon
-                        aria-hidden="true"
-                        className="h-6 w-6 text-gray-600 group-hover:text-indigo-600"
-                      />
-                    </div>
-                    <div className="flex-auto">
-                      <a
-                        href={item.href}
-                        className="block font-semibold text-gray-900"
-                      >
-                        {item.name}
-                        <span className="absolute inset-0" />
-                      </a>
-                      <p className="mt-1 text-gray-600">{item.description}</p>
-                    </div>
+                {/* CARICAMENTO ED ERRORI */}
+                {loading && (
+                  <div className="p-4 text-center text-sm text-gray-500">
+                    Caricamento...
                   </div>
-                ))}
+                )}
+                {error && (
+                  <div className="p-4 text-center text-sm text-red-600">
+                    {error}
+                  </div>
+                )}
+                {/* CATEGORIE */}
+                {!loading &&
+                  !error &&
+                  categories.map((item) => (
+                    <div
+                      key={item.idCategory}
+                      className="group relative flex items-center gap-x-6 rounded-lg p-4 text-sm leading-6 hover:bg-gray-50"
+                    >
+                      <div className="flex h-11 w-11 flex-none items-center justify-center rounded-lg bg-gray-50 group-hover:bg-white">
+                        <img
+                          src={item.coverImageUrl}
+                          alt={item.name}
+                          className="h-8 w-8 rounded-md object-cover"
+                        />
+                      </div>
+                      <div className="flex-auto">
+                        <a
+                          href={`/category/${item.slug}`}
+                          className="block font-semibold text-gray-900"
+                        >
+                          {item.name}
+                          <span className="absolute inset-0" />
+                        </a>
+                        <p className="mt-1 text-gray-600">{item.description}</p>
+                      </div>
+                    </div>
+                  ))}
               </div>
             </PopoverPanel>
           </Popover>
@@ -163,11 +164,7 @@ export default function Navbar() {
           <div className="flex items-center justify-between">
             <a href="#" className="-m-1.5 p-1.5">
               <span className="sr-only">Segnali</span>
-              <img
-                alt=""
-                src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                className="h-8 w-auto"
-              />
+              <img alt="" src={logo} className="h-8 w-auto" />
             </a>
             <button
               type="button"
@@ -190,16 +187,22 @@ export default function Navbar() {
                     />
                   </DisclosureButton>
                   <DisclosurePanel className="mt-2 space-y-2">
-                    {[...products].map((item) => (
-                      <DisclosureButton
-                        key={item.name}
-                        as="a"
-                        href={item.href}
-                        className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
-                      >
-                        {item.name}
-                      </DisclosureButton>
-                    ))}
+                    {loading ? (
+                      <div className="p-4 text-center text-sm text-gray-500">
+                        Caricamento...
+                      </div>
+                    ) : (
+                      categories.map((item) => (
+                        <DisclosureButton
+                          key={item.idCategory}
+                          as="a"
+                          href={`/category/${item.slug}`}
+                          className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
+                        >
+                          {item.name}
+                        </DisclosureButton>
+                      ))
+                    )}
                   </DisclosurePanel>
                 </Disclosure>
                 <a
