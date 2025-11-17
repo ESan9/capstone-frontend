@@ -4,17 +4,34 @@ import type {
   Page,
   Product,
   ProductFilterParams,
+  LoginDTO,
+  LoginResponseDTO,
+  RegisterDTO,
+  User,
 } from "../types/api";
 
+// Creo un "client" axios pre-configurato
 const apiClient = axios.create({
   baseURL: "http://localhost:3001",
   timeout: 10000,
 });
 
-/**
- * Funzione per caricare le categorie (per la Navbar).
- * Chiama l'endpoint GET /category
- */
+// Interceptor per il Token
+apiClient.interceptors.request.use(
+  (config) => {
+    const token = localStorage.getItem("authToken");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
+  }
+);
+
+// Funzioni Pubbliche
+
 export const fetchCategories = async (): Promise<Page<Category>> => {
   try {
     const response = await apiClient.get("/category");
@@ -25,15 +42,10 @@ export const fetchCategories = async (): Promise<Page<Category>> => {
   }
 };
 
-/**
- * Funzione per caricare i prodotti (per la vetrina).
- * Chiama l'endpoint GET /product e gli passa i filtri.
- */
 export const fetchProducts = async (
   params: ProductFilterParams
 ): Promise<Page<Product>> => {
   try {
-    // Axios converte l'oggetto 'params' in una query string (es. ?page=0&name=borsa)
     const response = await apiClient.get("/product", { params });
     return response.data;
   } catch (error) {
@@ -42,16 +54,46 @@ export const fetchProducts = async (
   }
 };
 
-/**
- * Funzione per caricare un singolo prodotto (per la pagina di dettaglio).
- * Chiama l'endpoint GET /product/{slug}
- */
 export const fetchProductBySlug = async (slug: string): Promise<Product> => {
   try {
     const response = await apiClient.get(`/product/${slug}`);
     return response.data;
   } catch (error) {
     console.error(`Errore nel fetch del prodotto ${slug}:`, error);
+    throw error;
+  }
+};
+
+// FUNZIONI DI AUTENTICAZIONE
+
+export const login = async (
+  credentials: LoginDTO
+): Promise<LoginResponseDTO> => {
+  try {
+    const response = await apiClient.post("/auth/login", credentials);
+    return response.data;
+  } catch (error) {
+    console.error("Errore nel login:", error);
+    throw error;
+  }
+};
+
+export const register = async (userData: RegisterDTO): Promise<User> => {
+  try {
+    const response = await apiClient.post("/auth/register", userData);
+    return response.data;
+  } catch (error) {
+    console.error("Errore nella registrazione:", error);
+    throw error;
+  }
+};
+
+export const getMe = async (): Promise<User> => {
+  try {
+    const response = await apiClient.get("/users/me");
+    return response.data;
+  } catch (error) {
+    console.error("Errore nel fetch del profilo utente:", error);
     throw error;
   }
 };

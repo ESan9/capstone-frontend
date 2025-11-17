@@ -52,3 +52,38 @@ export interface Product {
   category: Category;
   productImages: ProductImage[];
 }
+
+// --- AUTENTICAZIONE ---
+
+export interface Role {
+  idRole: string;
+  role: "USER" | "ADMIN";
+}
+
+// Corrisponde all'entità User del backend
+export interface User {
+  idUser: string;
+  name: string;
+  surname: string;
+  email: string;
+  roles: Role[];
+}
+
+// Corrisponde al LoginDTO del backend
+export interface LoginDTO {
+  email: string;
+  password: string;
+}
+
+// Corrisponde al NewUserDTO del backend
+export interface RegisterDTO {
+  name: string;
+  surname: string;
+  email: string;
+  password: string;
+}
+
+// Corrisponde al LoginResponseDTO del backend
+export interface LoginResponseDTO {
+  accessToken: string;
+}
