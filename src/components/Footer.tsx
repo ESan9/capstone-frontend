@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="w-full max-w-screen-xl mx-auto p-4 md:py-8">
         <div className="flex flex-col items-center sm:flex-row sm:justify-between">
           <a
-            href="#"
+            href="/"
             className="flex items-center mb-4 sm:mb-0 space-x-3 rtl:space-x-reverse"
           >
             <span className="self-center text-2xl font-semibold whitespace-nowrap hover:underline">
@@ -13,12 +13,12 @@ export default function Footer() {
           </a>
           <ul className="flex flex-wrap items-center mb-6 text-sm font-medium sm:mb-0">
             <li>
-              <a href="#" className="hover:underline me-4 md:me-6">
+              <a href="/about" className="hover:underline me-4 md:me-6">
                 La nostra storia
               </a>
             </li>
             <li>
-              <a href="#" className="hover:underline me-4 md:me-6">
+              <a href="/contact" className="hover:underline me-4 md:me-6">
                 Contatti
               </a>
             </li>

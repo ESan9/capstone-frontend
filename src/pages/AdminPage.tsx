@@ -70,8 +70,6 @@ export default function AdminPage() {
 
   // 2. Fetch Data Functions
   const refreshCategories = useCallback(() => {
-    // Nota: fetchCategories nel tuo api.ts non accetta parametri di paginazione al momento.
-    // Carichiamo la prima pagina predefinita dal backend.
     api
       .fetchCategories()
       .then((res) => setCategoriesList(res.content))
@@ -312,7 +310,7 @@ export default function AdminPage() {
         </div>
         <button
           onClick={() => navigate("/")}
-          className="mt-4 md:mt-0 text-sm font-medium text-indigo-600 hover:text-indigo-500 flex items-center"
+          className="mt-4 md:mt-0 text-sm font-medium text-black hover:underline flex items-center cursor-pointer"
         >
           &larr; Torna al negozio
         </button>
@@ -330,7 +328,7 @@ export default function AdminPage() {
             className={`${
               activeTab === "category"
                 ? "border-black text-black"
-                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 cursor-pointer"
             } whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium transition-colors`}
           >
             Gestione Categorie
@@ -344,7 +342,7 @@ export default function AdminPage() {
             className={`${
               activeTab === "product"
                 ? "border-black text-black"
-                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700 cursor-pointer"
             } whitespace-nowrap border-b-2 px-1 py-4 text-sm font-medium transition-colors`}
           >
             Gestione Prodotti
@@ -460,7 +458,7 @@ export default function AdminPage() {
                     <tr
                       key={cat.idCategory}
                       className={
-                        editingCatId === cat.idCategory ? "bg-indigo-50" : ""
+                        editingCatId === cat.idCategory ? "bg-gray-50" : ""
                       }
                     >
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
@@ -472,13 +470,13 @@ export default function AdminPage() {
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                         <button
                           onClick={() => startEditCategory(cat)}
-                          className="text-indigo-600 hover:text-indigo-900 mr-4 font-medium"
+                          className="text-black hover:underline mr-4 font-medium cursor-pointer"
                         >
                           Modifica
                         </button>
                         <button
                           onClick={() => handleDeleteCategory(cat.idCategory)}
-                          className="text-red-600 hover:text-red-900 font-medium"
+                          className="text-red-600 hover:text-red-900 font-medium cursor-pointer"
                         >
                           Elimina
                         </button>
@@ -694,7 +692,7 @@ export default function AdminPage() {
                     <tr
                       key={prod.idProduct}
                       className={
-                        editingProdId === prod.idProduct ? "bg-indigo-50" : ""
+                        editingProdId === prod.idProduct ? "bg-gray-50" : ""
                       }
                     >
                       <td className="whitespace-nowrap py-4 pl-4 pr-3 text-sm font-medium text-gray-900">
@@ -727,13 +725,13 @@ export default function AdminPage() {
                       <td className="relative whitespace-nowrap py-4 pl-3 pr-4 text-right text-sm font-medium sm:pr-6">
                         <button
                           onClick={() => startEditProduct(prod)}
-                          className="text-indigo-600 hover:text-indigo-900 mr-4 font-medium"
+                          className="text-black hover:underline mr-4 font-medium cursor-pointer"
                         >
                           Modifica
                         </button>
                         <button
                           onClick={() => handleDeleteProduct(prod.idProduct)}
-                          className="text-red-600 hover:text-red-900 font-medium"
+                          className="text-red-600 hover:text-red-900 font-medium cursor-pointer"
                         >
                           Elimina
                         </button>

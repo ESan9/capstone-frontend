@@ -243,3 +243,13 @@ export const getErrorMessage = (error: unknown): string => {
 
   return "Si è verificato un errore imprevisto o di rete.";
 };
+
+export const fetchCategoryBySlug = async (slug: string): Promise<Category> => {
+  try {
+    const response = await apiClient.get(`/category/${slug}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Errore nel fetch della categoria ${slug}:`, error);
+    throw error;
+  }
+};

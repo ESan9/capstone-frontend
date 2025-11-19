@@ -38,7 +38,7 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       <div className="p-6 text-center">
         {product.highlighted && (
-          <span className="mb-2 inline-block rounded-full bg-indigo-100 px-3 py-1 text-xs font-semibold text-indigo-800">
+          <span className="mb-2 inline-block rounded-full bg-gray-100 px-3 py-1 text-xs font-semibold text-black">
             In Evidenza
           </span>
         )}

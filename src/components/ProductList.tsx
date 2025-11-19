@@ -1,73 +1,100 @@
 import { useState, useEffect } from "react";
-import type { Product, ProductFilterParams } from "../types/api";
-import { fetchProducts } from "../services/api";
+import { useParams } from "react-router-dom"; // <--- Importa useParams
+import type { Product, ProductFilterParams, Category } from "../types/api";
+import { fetchProducts, fetchCategoryBySlug } from "../services/api";
 import ProductCard from "../components/ProductCard";
 
 export default function ProductList() {
+  const { slug } = useParams<{ slug: string }>(); // Legge lo slug dall'URL
+
   const [products, setProducts] = useState<Product[]>([]);
+  const [currentCategory, setCurrentCategory] = useState<Category | null>(null);
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  // Filtri di base
-  const [filters] = useState<ProductFilterParams>({
-    page: 0,
-    size: 9, // 9 prodotti (3x3)
-    sort: "name,asc",
-  });
-
   useEffect(() => {
-    const loadProducts = async () => {
+    const loadData = async () => {
       try {
         setLoading(true);
         setError(null);
-        const response = await fetchProducts(filters);
+
+        // Filtri di base
+        let currentFilters: ProductFilterParams = {
+          page: 0,
+          size: 12,
+          sort: "name,asc",
+        };
+
+        // SE C'È UNO SLUG (Siamo in /category/borse)
+        if (slug) {
+          // 1. Recuperiamo l'ID della categoria dallo slug
+          const categoryData = await fetchCategoryBySlug(slug);
+          setCurrentCategory(categoryData);
+
+          // 2. Aggiungiamo l'ID ai filtri
+          currentFilters = {
+            ...currentFilters,
+            categoryId: categoryData.idCategory,
+          };
+        } else {
+          // Se non c'è slug, resettiamo la categoria corrente
+          setCurrentCategory(null);
+        }
+
+        // 3. Scarichiamo i prodotti (filtrati o tutti)
+        const response = await fetchProducts(currentFilters);
         setProducts(response.content);
       } catch (err) {
-        setError("Impossibile caricare i prodotti.");
         console.error(err);
+        setError(
+          "Impossibile caricare i prodotti. La categoria potrebbe non esistere."
+        );
       } finally {
         setLoading(false);
       }
     };
 
-    loadProducts();
-  }, [filters]);
+    loadData();
+  }, [slug]); // Riesegue quando cambia lo slug nell'URL
 
-  // Gestione stati (Caricamento, Errore, Vuoto)
+  // --- RENDER ---
+
   if (loading) {
     return (
-      <div className="p-6 text-center text-gray-500">
-        Caricamento dei prodotti...
+      <div className="flex h-64 items-center justify-center">
+        <div className="h-8 w-8 animate-spin rounded-full border-4 border-gray-200 border-t-black"></div>
       </div>
     );
   }
 
   if (error) {
-    return <div className="p-6 text-center text-red-600">Errore: {error}</div>;
+    return <div className="p-10 text-center text-red-600">{error}</div>;
   }
 
-  if (products.length === 0) {
-    return (
-      <div className="p-6 text-center text-gray-500">
-        Nessun prodotto trovato. (Assicurati di aver creato dei prodotti nel
-        backend!)
-      </div>
-    );
-  }
-
-  // Render della Griglia
   return (
-    <div className="bg-white p-6 shadow-sm rounded-lg">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">
-        I Nostri Prodotti
-      </h1>
-
-      {/* Griglia responsive di Tailwind */}
-      <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3">
-        {products.map((product) => (
-          <ProductCard key={product.idProduct} product={product} />
-        ))}
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-8">
+      {/* Titolo Dinamico */}
+      <div className="mb-8 border-b border-gray-200 pb-4">
+        <h1 className="text-3xl font-bold tracking-tight text-gray-900">
+          {currentCategory ? currentCategory.name : "Tutti i Prodotti"}
+        </h1>
+        {currentCategory && (
+          <p className="mt-2 text-gray-500">{currentCategory.description}</p>
+        )}
       </div>
+
+      {products.length === 0 ? (
+        <div className="py-20 text-center text-gray-500">
+          Nessun prodotto trovato in questa sezione.
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {products.map((product) => (
+            <ProductCard key={product.idProduct} product={product} />
+          ))}
+        </div>
+      )}
     </div>
   );
 }

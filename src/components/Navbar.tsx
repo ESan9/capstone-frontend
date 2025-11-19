@@ -153,7 +153,7 @@ export default function Navbar() {
             to="/contact"
             className="text-sm font-semibold leading-6 text-gray-900 hover:underline"
           >
-            Contatti
+            Contatti e dove trovarci
           </Link>
         </PopoverGroup>
 
