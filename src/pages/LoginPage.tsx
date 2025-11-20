@@ -30,8 +30,6 @@ export default function LoginPage() {
 
       // Mostra il messaggio di successo
       setSuccess("Login effettuato con successo! Reindirizzamento...");
-
-      // Aspetta 1.5 secondi prima di reindirizzare, così l'utente legge il messaggio
       setTimeout(() => {
         if (isAdmin) {
           navigate("/admin");

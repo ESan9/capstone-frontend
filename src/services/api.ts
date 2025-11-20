@@ -45,7 +45,7 @@ apiClient.interceptors.response.use(
     if (error.response && error.response.status === 401) {
       console.warn("Sessione scaduta o non autorizzata. Logout...");
       localStorage.removeItem("authToken");
-      localStorage.removeItem("user"); // Rimuovi anche i dati user se li salvi
+      localStorage.removeItem("user");
       window.location.href = "/login";
     }
 
@@ -143,7 +143,7 @@ export const uploadCategoryCover = async (
   file: File
 ): Promise<Category> => {
   const formData = new FormData();
-  formData.append("cover", file); // "cover" deve corrispondere al @RequestParam del backend
+  formData.append("cover", file);
   const response = await apiClient.post(
     `/category/${categoryId}/upload-cover`,
     formData,
@@ -166,7 +166,7 @@ export const uploadProductImage = async (
   file: File
 ): Promise<ProductImage> => {
   const formData = new FormData();
-  formData.append("image", file); // Assicurati che "image" corrisponda al @RequestParam del backend
+  formData.append("image", file);
 
   // Axios rileva FormData e imposta automaticamente il Content-Type corretto con il boundary
   const response = await apiClient.post(
@@ -229,7 +229,7 @@ export const getErrorMessage = (error: unknown): string => {
   if (axios.isAxiosError(error) && error.response) {
     const data = error.response.data as BackendErrorResponse;
 
-    // 1. PRIORITÀ ASSOLUTA: Se il backend ci ha mandato un messaggio esplicito, usiamo quello
+    // 1. PRIORITÀ ASSOLUTA: Se il backend manda un messaggio esplicito, uso quello
     if (data && data.message) {
       return data.message;
     }

@@ -140,7 +140,7 @@ export default function AdminPage() {
       const catDTO: NewCategoryDTO = {
         name: catName,
         description: catDesc,
-        coverImageUrl: "", // Gestito separatamente o dal backend se vuoto
+        coverImageUrl: "",
       };
 
       let categoryId = editingCatId;
@@ -240,7 +240,6 @@ export default function AdminPage() {
       } else {
         const newProd = await api.createProduct(prodDTO);
         productId = newProd.idProduct;
-        // Non mettiamo ancora il messaggio di successo, aspettiamo l'immagine
       }
 
       // 2. GESTIONE IMMAGINE (Isolata)
@@ -253,7 +252,7 @@ export default function AdminPage() {
 
           const imgErrorText = api.getErrorMessage(imgErr);
           setMessage({
-            type: "error", // O "warning" se hai uno stile giallo
+            type: "error",
             text: `Prodotto salvato, ma errore caricamento immagine: ${imgErrorText}`,
           });
 
