@@ -456,6 +456,8 @@ export default function AdminPage() {
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Immagine Copertina
                 </label>
+
+                {/* PREVIEW */}
                 {catImagePreview && (
                   <div className="mb-3 h-32 w-full overflow-hidden rounded-lg border border-gray-200 bg-gray-100">
                     <img
@@ -465,14 +467,42 @@ export default function AdminPage() {
                     />
                   </div>
                 )}
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(e) =>
-                    setCatFile(e.target.files ? e.target.files[0] : null)
-                  }
-                  className="block w-full text-sm text-gray-500 cursor-pointer"
-                />
+
+                {/* BOTTONE CUSTOM */}
+                <div className="mt-2">
+                  <label
+                    htmlFor="cat-file-upload"
+                    className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 cursor-pointer transition-colors"
+                  >
+                    {/* Icona */}
+                    <svg
+                      className="mr-2 h-5 w-5 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
+                      />
+                    </svg>
+
+                    {catFile ? catFile.name : "Scegli un file..."}
+
+                    <input
+                      id="cat-file-upload"
+                      name="cat-file-upload"
+                      type="file"
+                      accept="image/*"
+                      className="sr-only" // nasconde l'input visivamente ma lo lascia accessibile
+                      onChange={(e) =>
+                        setCatFile(e.target.files ? e.target.files[0] : null)
+                      }
+                    />
+                  </label>
+                </div>
               </div>
               <div className="flex gap-2 pt-2">
                 <button
@@ -726,17 +756,47 @@ export default function AdminPage() {
                   <label className="text-sm text-gray-700 font-medium">
                     Aggiungi nuove foto
                   </label>
-                  <input
-                    id="prod-file-input"
-                    type="file"
-                    accept="image/*"
-                    multiple
-                    onChange={handleProdFilesChange}
-                    className="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-black file:text-white hover:file:bg-gray-800 cursor-pointer"
-                  />
+
+                  {/* BOTTONE CUSTOM MULTI-UPLOAD */}
+                  <label
+                    htmlFor="prod-file-input"
+                    className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-3 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 cursor-pointer transition-colors"
+                  >
+                    <svg
+                      className="mr-2 h-5 w-5 text-gray-400"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="1.5"
+                      stroke="currentColor"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909m-18 3.75h16.5a1.5 1.5 0 001.5-1.5V6a1.5 1.5 0 00-1.5-1.5H3.75A1.5 1.5 0 002.25 6v12a1.5 1.5 0 001.5 1.5zm10.5-11.25h.008v.008h-.008V8.25zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                      />
+                    </svg>
+
+                    {/* Testo dinamico */}
+                    {prodFiles.length > 0
+                      ? `${prodFiles.length} file selezionati`
+                      : "Clicca per selezionare le immagini..."}
+
+                    <input
+                      id="prod-file-input"
+                      type="file"
+                      accept="image/*"
+                      multiple // Multi-selezione attiva
+                      className="sr-only"
+                      onChange={handleProdFilesChange}
+                    />
+                  </label>
+
                   <p className="text-xs text-gray-500">
-                    Tieni premuto CTRL per selezionare più file.
+                    Tieni premuto CTRL (o CMD su Mac) per selezionare più file
+                    contemporaneamente.
                   </p>
+
+                  {/* PREVIEW NUOVI FILE */}
                   {prodFiles.length > 0 && (
                     <div className="mt-4">
                       <p className="text-xs text-gray-500 mb-2">

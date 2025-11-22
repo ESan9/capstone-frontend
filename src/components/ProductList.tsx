@@ -232,7 +232,7 @@ export default function ProductList() {
                 name="categoryId"
                 value={tempFilters.categoryId || ""}
                 onChange={handleInputChange}
-                className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6"
+                className="block w-full rounded-md border-0 p-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-black sm:text-sm sm:leading-6 cursor-pointer"
               >
                 <option value="">Tutte le categorie</option>
                 {categories.map((cat) => (
@@ -274,7 +274,7 @@ export default function ProductList() {
               <button
                 type="button"
                 onClick={applyFilters}
-                className="flex w-full items-center justify-center rounded-md border border-transparent bg-black px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none"
+                className="flex w-full items-center justify-center rounded-md border border-transparent bg-black px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-gray-800 focus:outline-none cursor-pointer"
               >
                 <FunnelIcon className="mr-2 h-4 w-4" />
                 Applica Filtri
@@ -283,7 +283,7 @@ export default function ProductList() {
               <button
                 type="button"
                 onClick={resetFilters}
-                className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none"
+                className="flex w-full items-center justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none cursor-pointer"
               >
                 <XMarkIcon className="mr-2 h-4 w-4" />
                 Reset
@@ -318,7 +318,6 @@ export default function ProductList() {
                     <div className="flex items-center gap-2">
                       {/* Bottone Precedente */}
                       <button
-                        // FIX: Aggiunto ( ?? 0) per gestire l'undefined
                         onClick={() =>
                           handlePageChange((activeFilters.page ?? 0) - 1)
                         }
@@ -335,13 +334,13 @@ export default function ProductList() {
 
                       {/* Indicatore Pagine */}
                       <span className="px-4 text-sm font-medium text-gray-700">
-                        {/* FIX: Aggiunto ( ?? 0) */}
+                        {/* Aggiunto ( ?? 0) */}
                         Pagina {(activeFilters.page ?? 0) + 1} di {totalPages}
                       </span>
 
                       {/* Bottone Successivo */}
                       <button
-                        // FIX: Aggiunto ( ?? 0)
+                        // Aggiunto ( ?? 0)
                         onClick={() =>
                           handlePageChange((activeFilters.page ?? 0) + 1)
                         }
