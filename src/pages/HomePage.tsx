@@ -139,7 +139,7 @@ export default function HomePage() {
       </div>
 
       {/* ================= ULTIMI ARRIVI ================= */}
-      <div className="bg-gray-25 pt-6">
+      <div className="bg-gray-50 pt-6">
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 sm:pt-0 sm:pb-24">
           <div className="flex justify-between items-end mb-8">
             <div>
