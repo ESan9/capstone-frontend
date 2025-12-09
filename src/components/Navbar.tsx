@@ -272,6 +272,7 @@ export default function Navbar() {
                           key={item.idCategory}
                           as={Link}
                           to={`/category/${item.slug}`}
+                          onClick={() => setMobileMenuOpen(false)}
                           className="block rounded-lg py-2 pl-6 pr-3 text-sm font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                         >
                           {item.name}
@@ -281,12 +282,14 @@ export default function Navbar() {
                 </Disclosure>
                 <Link
                   to="/about"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   La nostra storia
                 </Link>
                 <Link
                   to="/contact"
+                  onClick={() => setMobileMenuOpen(false)}
                   className="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                 >
                   Contatti
@@ -314,12 +317,14 @@ export default function Navbar() {
                   <>
                     <Link
                       to="/login"
+                      onClick={() => setMobileMenuOpen(false)}
                       className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       Accedi
                     </Link>
                     <Link
                       to="/register"
+                      onClick={() => setMobileMenuOpen(false)}
                       className="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-50"
                     >
                       Registrati
