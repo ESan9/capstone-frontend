@@ -57,17 +57,13 @@ export default function ContactPage() {
             </h3>
             <div className="border-l-4 border-gray-200 pl-6 pt-2 text-gray-600">
               <div className="flex gap-x-2 items-center mb-4">
-                <EnvelopeIcon className="h-5 w-5 text-gray-400" />
-                <p>{CONTACT_EMAIL}</p>
+                <a
+                  href={`mailto:${CONTACT_EMAIL}?subject=Informazioni%20Segnali&body=Salve,%20vorrei%20informazioni%20riguardo...`}
+                  className="rounded-md bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
+                >
+                  Invia una Email
+                </a>
               </div>
-
-              {/* PULSANTE MAILTO */}
-              <a
-                href={`mailto:${CONTACT_EMAIL}?subject=Informazioni%20Segnali&body=Salve,%20vorrei%20informazioni%20riguardo...`}
-                className="rounded-md bg-black px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-gray-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-black"
-              >
-                Invia una Email
-              </a>
             </div>
           </div>
         </div>
