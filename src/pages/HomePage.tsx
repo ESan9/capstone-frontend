@@ -62,7 +62,7 @@ export default function HomePage() {
             alt="Hero Background"
             className="h-full w-full object-cover object-center opacity-50"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/40" />
+          <div className="absolute inset-0 bg-linear-to-t from-gray-900 via-gray-900/40" />
         </div>
 
         <div className="relative mx-auto max-w-7xl px-6 py-32 sm:py-48 lg:px-8 flex flex-col items-center text-center">
@@ -75,7 +75,7 @@ export default function HomePage() {
           <div className="mt-10 flex items-center justify-center gap-x-6">
             <Link
               to={"/shop"}
-              className="rounded-md bg-white px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white transition-all"
+              className="rounded-md bg-white px-6 py-3 text-sm font-semibold text-gray-900 shadow-sm hover:bg-gray-100 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-white transition-all"
             >
               {heroProduct ? "Vai al catalogo" : "Vai al Negozio"}
             </Link>
@@ -112,7 +112,7 @@ export default function HomePage() {
                   className="h-full w-full object-cover object-center transform group-hover:scale-105 transition-transform duration-500"
                 />
               </div>
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-6">
+              <div className="absolute inset-0 bg-linear-to-t from-black/70 to-transparent flex items-end p-6">
                 <div>
                   <h3 className="text-xl font-bold text-white">
                     <Link to={`/category/${cat.slug}`}>

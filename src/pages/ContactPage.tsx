@@ -1,8 +1,4 @@
-import {
-  EnvelopeIcon,
-  PhoneIcon,
-  MapPinIcon,
-} from "@heroicons/react/24/outline";
+import { PhoneIcon, MapPinIcon } from "@heroicons/react/24/outline";
 
 export default function ContactPage() {
   const CONTACT_EMAIL = "sannagianmario894@gmail.com";
