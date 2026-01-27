@@ -15,7 +15,7 @@ export default function HomePage() {
       try {
         setIsLoading(true);
 
-        // 1. Prodotto "In Evidenza" per la hero
+        // 1. Prodotto per la hero
         const highlightedRes = await api.fetchProducts({
           highlighted: true,
           size: 1,
@@ -24,11 +24,11 @@ export default function HomePage() {
           setHeroProduct(highlightedRes.content[0]);
         }
 
-        // 2. Fetch Categorie (3 per la griglia)
+        // 2. Fetch Categorie
         const categoriesRes = await api.fetchCategories();
         setCategories(categoriesRes.content.slice(0, 3));
 
-        // 3. Fetch Ultimi Arrivi (Ordino per ID decrescente per avere i più nuovi)
+        // 3. Fetch Ultimi Arrivi
         const latestRes = await api.fetchProducts({
           size: 4,
           sort: "idProduct,desc",
@@ -46,8 +46,11 @@ export default function HomePage() {
 
   if (isLoading) {
     return (
-      <div className="flex h-screen items-center justify-center bg-white">
+      <div className="flex h-screen flex-col items-center justify-center bg-white">
         <div className="h-16 w-16 animate-spin rounded-full border-4 border-gray-200 border-t-black"></div>
+        <p className="mt-4 text-gray-500 animate-pulse">
+          Svegliando il database artigianale... un momento.
+        </p>
       </div>
     );
   }
